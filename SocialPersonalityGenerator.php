@@ -93,7 +93,7 @@ class SocialPersonalityGenerator
     {
         $client = new GuzzleHttpClient();
         //Open an new memory stream for writing and reading the Watson response attachments
-        $memoryWriteStream = fopen('php://memory', 'w');
+        $memoryWriteStream = GuzzleHttp\Psr7\stream_for(fopen('php://memory', 'w'));
 
         //Make an request to the Watson API
         $client->post($this->IBMWatsonConfig['endpoint'], [
@@ -113,6 +113,6 @@ class SocialPersonalityGenerator
         ]);
 
         //Read the stream resource contents and return it
-        return stream_get_contents($memoryWriteStream);
+        return GuzzleHttp\Psr7\readline($memoryWriteStream);
     }
 }
